@@ -1,0 +1,38 @@
+{
+  "name": "KantinPay",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "native-base": "^2.10.0",
+    "react": "16.6.3",
+    "react-native": "0.58.1",
+    "react-native-elements": "^1.1.0",
+    "react-native-gesture-handler": "~1.0.14",
+    "react-native-vector-icons": "^6.4.1",
+    "react-navigation": "^3.4.1",
+    "unify-react-native": "0.0.54"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.8",
+    "@types/react-native": "^0.57.40",
+    "@types/react-native-vector-icons": "^4.6.4",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "24.0.0",
+    "jest": "24.0.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "prettier": "^1.16.4",
+    "react-native-typescript-transformer": "^1.2.12",
+    "react-test-renderer": "16.6.3",
+    "tslint": "^5.14.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.3.3333"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
