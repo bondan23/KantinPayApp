@@ -14,12 +14,27 @@ import {
 } from 'react-native-elements'
 
 import { NavigationScreenProps } from 'react-navigation'
+import { getDetail } from '../../helpers/Request'
 
 type Props = NavigationScreenProps
 
 class HomeScreen extends React.Component<Props> {
   public static navigationOptions = {
     title: 'Home',
+  }
+
+  public componentDidMount() {
+    getDetail()
+      .then((v) => {
+        console.log('====================================')
+        console.log(v)
+        console.log('====================================')
+      })
+      .catch((err) => {
+        console.log('====================================')
+        console.log(err)
+        console.log('====================================')
+      })
   }
 
   public render() {
@@ -91,12 +106,14 @@ class HomeScreen extends React.Component<Props> {
               flexDirection: 'row',
             }}
           >
-            <View
+            <TouchableOpacity
               style={{
                 flex: 0.25,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+              activeOpacity={0.9}
+              onPress={() => this.props.navigation.navigate('Scan')}
             >
               <Icon
                 name="qrcode"
@@ -108,7 +125,7 @@ class HomeScreen extends React.Component<Props> {
                 }}
               />
               <Text style={{ fontSize: 10 }}>Scan</Text>
-            </View>
+            </TouchableOpacity>
 
             <View
               style={{

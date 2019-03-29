@@ -12,11 +12,13 @@ import RegisterScreen from './containers/Auth/Register/RegisterScreen'
 import LoadingScreen from './containers/AuthLoading/LoadingScreen'
 import HistoryScreen from './containers/History/HistoryScreen'
 import HomeScreen from './containers/Home/HomeScreen'
+import ScanScreen from './containers/Scan/ScanScreen'
 import SettingScreen from './containers/Setting/SettingScreen'
 
 const HomeNavigator = createStackNavigator({
   Home: HomeScreen,
   History: HistoryScreen,
+  Scan: ScanScreen,
 })
 
 HomeNavigator.navigationOptions = (props: NavigationScreenProps) => {
