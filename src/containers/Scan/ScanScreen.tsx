@@ -1,35 +1,107 @@
+// tslint:disable:arrow-parens
 import React, { Component } from 'react'
+import { Button, Input } from 'react-native-elements'
 
-import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import QRCodeScanner from 'react-native-qrcode-scanner'
 
 import { RNCamera } from 'react-native-camera'
 import { NavigationScreenProps } from 'react-navigation'
+import { getDetail, sendBalance } from '../../helpers/Request'
 
 type Props = NavigationScreenProps
 
-export default class ScanScreen extends Component<Props> {
-  public onSuccess = v => {
-    console.log('====================================')
-    console.log(JSON.parse(v.data))
-    console.log('====================================')
-    this.props.navigation.pop()
+interface State {
+  showQRScanner: boolean
+  accountData: AccountData
+  amountToSend: number
+  isLoading: boolean
+}
+
+interface AccountData {
+  id: number
+  email: string
+  name: string
+}
+
+export default class ScanScreen extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      showQRScanner: true,
+      accountData: {
+        id: 0,
+        email: '',
+        name: '',
+      },
+      amountToSend: 0,
+      isLoading: false,
+    }
   }
 
   public render() {
+    if (this.state.showQRScanner) {
+      return (
+        <QRCodeScanner
+          onRead={this.onSuccess}
+          showMarker={true}
+          cameraProps={{
+            autoFocus: RNCamera.Constants.AutoFocus.on,
+          }}
+          // customMarker={
+          //   <View style={{ backgroundColor: 'red', width: 100, height: 100 }} />
+          // }
+        />
+      )
+    }
+
     return (
-      <QRCodeScanner
-        onRead={this.onSuccess}
-        showMarker={true}
-        cameraProps={{
-          autoFocus: RNCamera.Constants.AutoFocus.on,
-        }}
-        // customMarker={
-        //   <View style={{ backgroundColor: 'red', width: 100, height: 100 }} />
-        // }
-      />
+      <View style={{ flex: 1 }}>
+        <Text>{this.state.accountData.name}</Text>
+        <Text>{this.state.accountData.email}</Text>
+
+        <Input
+          onChangeText={this.handleChangeText}
+          keyboardType={'decimal-pad'}
+        />
+        <View style={{ alignItems: 'center', flex: 1, marginTop: 10 }}>
+          <Button
+            title="Send"
+            containerStyle={{ width: 100 }}
+            onPress={this.handleSendBalance}
+            loading={this.state.isLoading}
+            disabled={this.state.isLoading}
+          />
+        </View>
+      </View>
     )
+  }
+
+  private onSuccess = (v: any) => {
+    const json = JSON.parse(v.data)
+    const id: number = json.id
+    getDetail(id).then(value => {
+      this.setState({ accountData: value.data, showQRScanner: false })
+    })
+    // this.props.navigation.pop()
+  }
+
+  private handleSendBalance = () =>
+    this.setState({ isLoading: true }, () =>
+      sendBalance(this.state.accountData.id, this.state.amountToSend).then(
+        () => {
+          console.log('====================================')
+          console.log('SUCCESS')
+          console.log('====================================')
+          this.setState({ isLoading: false }, this.props.navigation.pop)
+        },
+      ),
+    )
+
+  private handleChangeText = (balance: string) => {
+    const amountToSend = parseInt(balance, 10)
+    this.setState({ amountToSend })
   }
 
   private renderTopContent = () => {

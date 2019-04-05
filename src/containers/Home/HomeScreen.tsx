@@ -1,6 +1,11 @@
+// tslint:disable:jsx-no-lambda
+// tslint:disable:arrow-parens
+// tslint:disable:trailing-comma
 import React from 'react'
 import {
+  ActivityIndicator,
   FlatList,
+  RefreshControl,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -13,31 +18,72 @@ import {
   Text as CustomText,
 } from 'react-native-elements'
 
-import { NavigationScreenProps } from 'react-navigation'
+import {
+  NavigationEventSubscription,
+  NavigationScreenProps,
+} from 'react-navigation'
 import { getDetail } from '../../helpers/Request'
 
 type Props = NavigationScreenProps
 
-class HomeScreen extends React.Component<Props> {
+interface AccountData {
+  balance: number
+  name: string
+}
+
+interface State {
+  initiaLoading: boolean
+  isRefreshing: boolean
+  accountData: AccountData
+}
+
+class HomeScreen extends React.PureComponent<Props, State> {
   public static navigationOptions = {
     title: 'Home',
   }
 
+  private navSubscription?: NavigationEventSubscription
+
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      initiaLoading: true,
+      isRefreshing: false,
+      accountData: {
+        balance: 0,
+        name: '',
+      },
+    }
+  }
+
   public componentDidMount() {
-    getDetail()
-      .then((v) => {
-        console.log('====================================')
-        console.log(v)
-        console.log('====================================')
-      })
-      .catch((err) => {
-        console.log('====================================')
-        console.log(err)
-        console.log('====================================')
-      })
+    this.fetchData()
+
+    this.navSubscription = this.props.navigation.addListener('didFocus', () => {
+      if (!this.state.initiaLoading) {
+        this.fetchData(true)
+      }
+    })
+  }
+
+  public componentWillUnmount() {
+    if (this.navSubscription) {
+      this.navSubscription.remove()
+    }
   }
 
   public render() {
+    if (this.state.initiaLoading) {
+      return (
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <ActivityIndicator animating={true} />
+        </View>
+      )
+    }
+
     return (
       <ScrollView
         style={{
@@ -45,6 +91,7 @@ class HomeScreen extends React.Component<Props> {
           backgroundColor: '#00d4f2',
           // paddingHorizontal: 16,
         }}
+        refreshControl={this.refreshControl()}
       >
         <View
           style={{
@@ -68,7 +115,7 @@ class HomeScreen extends React.Component<Props> {
               marginLeft: 8,
             }}
           >
-            <Text>Bondan Eko Prasetyo</Text>
+            <Text>{this.state.accountData.name}</Text>
             <Text>$bondan23</Text>
           </View>
         </View>
@@ -94,7 +141,7 @@ class HomeScreen extends React.Component<Props> {
               <Text>KantinPay</Text>
             </View>
             <View style={{ flex: 1, alignItems: 'flex-end' }}>
-              <Text>Rp.100.000</Text>
+              <Text>{this.currencyFormat(this.state.accountData.balance)}</Text>
             </View>
           </View>
 
@@ -200,6 +247,7 @@ class HomeScreen extends React.Component<Props> {
               { title: 'Peler', key: 3 },
             ]}
             // ListHeaderComponent={() => <Text> Rekomendasi</Text>}
+            keyExtractor={(_, index) => `${index}`}
             renderItem={this.renderItem}
             horizontal={true}
             contentContainerStyle={{
@@ -223,6 +271,7 @@ class HomeScreen extends React.Component<Props> {
               { title: 'Peler', key: 3 },
             ]}
             // ListHeaderComponent={() => <Text> Rekomendasi</Text>}
+            keyExtractor={(_, index) => `${index}`}
             renderItem={this.renderItem}
             horizontal={true}
             contentContainerStyle={{
@@ -236,6 +285,41 @@ class HomeScreen extends React.Component<Props> {
       </ScrollView>
     )
   }
+
+  private currencyFormat(balance: number) {
+    return 'Rp.' + balance.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+  }
+
+  private fetchData = (isRefresh: boolean = false) => {
+    if (isRefresh) {
+      this.setState({
+        isRefreshing: true,
+      })
+    }
+
+    getDetail()
+      .then(value => {
+        const data = value.data as AccountData
+
+        this.setState({
+          isRefreshing: false,
+          initiaLoading: false,
+          accountData: data,
+        })
+      })
+      .catch(err => {
+        console.log('====================================')
+        console.log(err.response)
+        console.log('====================================')
+      })
+  }
+
+  private refreshControl = () => (
+    <RefreshControl
+      refreshing={this.state.isRefreshing}
+      onRefresh={() => this.fetchData(true)}
+    />
+  )
 
   private renderItem = () => {
     return (
