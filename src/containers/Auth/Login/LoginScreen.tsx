@@ -33,14 +33,12 @@ export default class LoginScreen extends Component<Props, State> {
           placeholder="Email"
           inputStyle={{ textAlign: 'center' }}
           onChangeText={this.handleEmailText}
-          defaultValue={'test1@test.com'}
         />
         <Input
           placeholder="Password"
           inputStyle={{ textAlign: 'center' }}
           secureTextEntry={true}
           onChangeText={this.handlePasswordText}
-          defaultValue={'12345'}
         />
         <View style={{ alignItems: 'center', flex: 1, marginTop: 10 }}>
           <Button
@@ -56,7 +54,7 @@ export default class LoginScreen extends Component<Props, State> {
 
   private handleLogin = () => {
     this.setState({ isLoading: true })
-    requestLogin('test1@test.com', '12345')
+    requestLogin(this.state.emailText, this.state.passwordText)
       .then(v => {
         const token = v.data.token
         this.setState({ isLoading: false })
@@ -66,9 +64,7 @@ export default class LoginScreen extends Component<Props, State> {
         })
       })
       .catch(e => {
-        console.log('====================================')
-        console.log(e)
-        console.log('====================================')
+        this.setState({ isLoading: false })
       })
   }
 

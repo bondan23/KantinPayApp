@@ -29,6 +29,7 @@ type Props = NavigationScreenProps
 interface AccountData {
   balance: number
   name: string
+  email: string
 }
 
 interface State {
@@ -53,6 +54,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
       accountData: {
         balance: 0,
         name: '',
+        email: '',
       },
     }
   }
@@ -105,7 +107,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
           <Avatar
             rounded={true}
             size="medium"
-            title="BEP"
+            title="Hi"
             // containerStyle={{ marginTop: 16, marginHorizontal: 2 }}
           />
           <View
@@ -116,7 +118,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
             }}
           >
             <Text>{this.state.accountData.name}</Text>
-            <Text>$bondan23</Text>
+            <Text>{this.state.accountData.email}</Text>
           </View>
         </View>
 
@@ -155,7 +157,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
           >
             <TouchableOpacity
               style={{
-                flex: 0.25,
+                flex: 0.33,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
@@ -174,7 +176,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
               <Text style={{ fontSize: 10 }}>Scan</Text>
             </TouchableOpacity>
 
-            <View
+            {/* <View
               style={{
                 flex: 0.25,
                 alignItems: 'center',
@@ -191,11 +193,11 @@ class HomeScreen extends React.PureComponent<Props, State> {
                 }}
               />
               <Text style={{ fontSize: 10 }}>Transfer</Text>
-            </View>
+            </View> */}
 
             <View
               style={{
-                flex: 0.25,
+                flex: 0.33,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
@@ -214,7 +216,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
 
             <TouchableOpacity
               style={{
-                flex: 0.25,
+                flex: 0.33,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
