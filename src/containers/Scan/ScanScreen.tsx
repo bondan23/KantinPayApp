@@ -26,6 +26,10 @@ interface AccountData {
 }
 
 export default class ScanScreen extends Component<Props, State> {
+  public static navigationOptions = {
+    title: 'Transfer',
+  }
+
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -58,13 +62,24 @@ export default class ScanScreen extends Component<Props, State> {
 
     return (
       <View style={{ flex: 1 }}>
-        <Text>{this.state.accountData.name}</Text>
-        <Text>{this.state.accountData.email}</Text>
+        <View style={{ alignItems: 'center', marginTop: 8 }}>
+          <Text>Data Penerima</Text>
+          <Text style={{ fontWeight: 'bold' }}>
+            {this.state.accountData.name}
+          </Text>
+          <Text style={{ fontWeight: 'bold' }}>
+            {this.state.accountData.email}
+          </Text>
+        </View>
 
-        <Input
-          onChangeText={this.handleChangeText}
-          keyboardType={'decimal-pad'}
-        />
+        <View style={{ marginTop: 8 }}>
+          <Text style={{ marginLeft: 8 }}>Jumlah uang yang akan di kirim:</Text>
+          <Input
+            onChangeText={this.handleChangeText}
+            keyboardType={'decimal-pad'}
+            // containerStyle={{ marginTop: 0, backgroundColor: 'red' }}
+          />
+        </View>
         <View style={{ alignItems: 'center', flex: 1, marginTop: 10 }}>
           <Button
             title="Send"
@@ -79,12 +94,10 @@ export default class ScanScreen extends Component<Props, State> {
   }
 
   private onSuccess = (v: any) => {
-    const json = JSON.parse(v.data)
-    const id: number = json.id
-    getDetail(id).then(value => {
+    const email = v.data
+    getDetail(email).then(value => {
       this.setState({ accountData: value.data, showQRScanner: false })
     })
-    // this.props.navigation.pop()
   }
 
   private handleSendBalance = () =>
