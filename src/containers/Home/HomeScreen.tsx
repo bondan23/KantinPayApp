@@ -195,12 +195,14 @@ class HomeScreen extends React.PureComponent<Props, State> {
               <Text style={{ fontSize: 10 }}>Transfer</Text>
             </View> */}
 
-            <View
+            <TouchableOpacity
               style={{
                 flex: 0.33,
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+              activeOpacity={0.9}
+              onPress={() => this.props.navigation.navigate('TopUp')}
             >
               <Icon
                 name="plus"
@@ -211,8 +213,8 @@ class HomeScreen extends React.PureComponent<Props, State> {
                   height: 32,
                 }}
               />
-              <Text style={{ fontSize: 10 }}>Top up</Text>
-            </View>
+              <Text style={{ fontSize: 10 }}>Top Up</Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={{
