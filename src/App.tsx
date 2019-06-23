@@ -15,12 +15,14 @@ import HomeScreen from './containers/Home/HomeScreen'
 import ScanScreen from './containers/Scan/ScanScreen'
 import SettingScreen from './containers/Setting/SettingScreen'
 import TopUpScreen from './containers/TopUp/TopUpScreen'
+import WithdrawScreen from './containers/Withdraw/WithdrawScreen'
 
 const HomeNavigator = createStackNavigator({
   Home: HomeScreen,
   History: HistoryScreen,
   Scan: ScanScreen,
   TopUp: TopUpScreen,
+  Withdraw: WithdrawScreen,
 })
 
 HomeNavigator.navigationOptions = (props: NavigationScreenProps) => {

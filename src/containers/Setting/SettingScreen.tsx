@@ -33,6 +33,9 @@ export default class SettingScreen extends Component<Props, State> {
           this.setState({ isLoading: false })
           AsyncStorage.clear(() => this.props.navigation.navigate('Auth'))
         })
-        .catch(() => this.setState({ isLoading: false })),
+        .catch(() => {
+          AsyncStorage.clear(() => this.props.navigation.navigate('Auth'))
+          this.setState({ isLoading: false })
+        }),
     )
 }

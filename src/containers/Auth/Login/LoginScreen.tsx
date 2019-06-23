@@ -54,7 +54,7 @@ export default class LoginScreen extends Component<Props, State> {
 
   private handleLogin = () => {
     this.setState({ isLoading: true })
-    requestLogin(this.state.emailText, this.state.passwordText)
+    requestLogin(this.state.emailText.toLowerCase().trim(), this.state.passwordText)
       .then(v => {
         const token = v.data.token
         this.setState({ isLoading: false })

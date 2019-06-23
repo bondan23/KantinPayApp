@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Picker, Text, View } from 'react-native'
+import { Picker, ToastAndroid, View } from 'react-native'
 import { Button, Text as CustomText } from 'react-native-elements'
 import { NavigationScreenProps } from 'react-navigation'
+import { requestTopUp } from '../../helpers/Request'
 
 type Props = NavigationScreenProps
 type SelectedValue = 10000 | 20000 | 50000 | 100000
 
 interface State {
   selectedValue: SelectedValue
+  isLoading: boolean
 }
 
 export default class TopUpScreen extends Component<Props, State> {
@@ -19,6 +21,7 @@ export default class TopUpScreen extends Component<Props, State> {
     super(props)
     this.state = {
       selectedValue: 10000,
+      isLoading: false,
     }
   }
 
@@ -50,12 +53,26 @@ export default class TopUpScreen extends Component<Props, State> {
           <Button
             title="Request"
             containerStyle={{ width: 100 }}
-            // onPress={this.handleSendBalance}
-            // loading={this.state.isLoading}
-            // disabled={this.state.isLoading}
+            onPress={this.handleRequestBalance}
+            loading={this.state.isLoading}
+            disabled={this.state.isLoading}
           />
         </View>
       </View>
     )
+  }
+
+  private handleRequestBalance = () => {
+    this.setState({ isLoading: true }, () => {
+      requestTopUp(this.state.selectedValue)
+        // tslint:disable-next-line: arrow-parens
+        .then(value => {
+          ToastAndroid.show(value.message, ToastAndroid.SHORT)
+          this.setState({ isLoading: false })
+        })
+        .catch(() => {
+          this.setState({ isLoading: false })
+        })
+    })
   }
 }

@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { Button, Input } from 'react-native-elements'
 
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Text, ToastAndroid, View } from 'react-native'
 
 import QRCodeScanner from 'react-native-qrcode-scanner'
 
@@ -53,9 +53,6 @@ export default class ScanScreen extends Component<Props, State> {
           cameraProps={{
             autoFocus: RNCamera.Constants.AutoFocus.on,
           }}
-          // customMarker={
-          //   <View style={{ backgroundColor: 'red', width: 100, height: 100 }} />
-          // }
         />
       )
     }
@@ -94,6 +91,7 @@ export default class ScanScreen extends Component<Props, State> {
   }
 
   private onSuccess = (v: any) => {
+    console.log(v);
     const email = v.data
     getDetail(email).then(value => {
       this.setState({ accountData: value.data, showQRScanner: false })
@@ -103,54 +101,21 @@ export default class ScanScreen extends Component<Props, State> {
   private handleSendBalance = () =>
     this.setState({ isLoading: true }, () =>
       sendBalance(this.state.accountData.id, this.state.amountToSend).then(
-        () => {
+        value => {
           console.log('====================================')
           console.log('SUCCESS')
           console.log('====================================')
+          ToastAndroid.show(value.message, ToastAndroid.SHORT)
           this.setState({ isLoading: false }, this.props.navigation.pop)
         },
-      ),
+      ).catch(err=>{
+        this.setState({ isLoading: false })
+        ToastAndroid.show(err.response.data.message, ToastAndroid.SHORT)
+      })
     )
 
   private handleChangeText = (balance: string) => {
     const amountToSend = parseInt(balance, 10)
     this.setState({ amountToSend })
   }
-
-  private renderTopContent = () => {
-    return (
-      <Text style={styles.centerText}>
-        Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
-        your computer and scan the QR code.
-      </Text>
-    )
-  }
-
-  private renderBottomContent = () => {
-    return (
-      <TouchableOpacity style={styles.buttonTouchable}>
-        <Text style={styles.buttonText}>OK. Got it!</Text>
-      </TouchableOpacity>
-    )
-  }
 }
-
-const styles = StyleSheet.create({
-  centerText: {
-    flex: 1,
-    fontSize: 18,
-    padding: 32,
-    color: '#777',
-  },
-  textBold: {
-    fontWeight: '500',
-    color: '#000',
-  },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)',
-  },
-  buttonTouchable: {
-    padding: 16,
-  },
-})

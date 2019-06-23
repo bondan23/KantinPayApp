@@ -10,7 +10,7 @@ interface HistoryData {
   amount: number
   name: string
   receiver: string
-  type: 'Top Up' | 'Transfer'
+  type: 'Top Up' | 'Transfer' | 'Withdraw'
 }
 
 interface State {
@@ -65,7 +65,8 @@ export default class HistoryScreen extends Component<Props, State> {
   private handleRefresh = () => this.fetchData(true)
 
   private renderItem = ({ item }: { item: HistoryData }) => {
-    if (item.type === 'Top Up') {
+    if (item.type === 'Top Up' || item.type === 'Withdraw') {
+      const subject = item.type === 'Top Up' ? 'Your' : 'Success'
       return (
         <View
           style={{
@@ -79,7 +80,7 @@ export default class HistoryScreen extends Component<Props, State> {
           }}
         >
           <Text>
-            Your {item.type} of {this.currencyFormat(item.amount)}
+            {subject} {item.type} of {this.currencyFormat(item.amount)}
           </Text>
         </View>
       )

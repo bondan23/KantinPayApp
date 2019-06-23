@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { AsyncStorage } from 'react-native'
 
-const HOST = 'http://192.168.100.9:8000'
+const HOST = 'http://192.168.5.253/kantinpay/public'
 const TOKEN_BONDAN =
   // tslint:disable-next-line:max-line-length
   'qWFDmwmZ1QNtlEJqWreOUAJJaYs20SLvQhFvN8Yj9bEaWwFGMVel9GlKRn3j'
@@ -49,6 +49,10 @@ export const requestLogin = (email: string, password: string) =>
     email,
     password,
   })
+export const requestTopUp = (balance: number) =>
+  requestPost('request_topup', { request_balance: balance })
 export const sendBalance = (id: number, amount: number) =>
   requestPost('/transfer', { to_id: id, amount })
 export const requestLogout = () => requestGet('logout')
+export const requestWithdraw = (balance: number) =>
+  requestPost('request_withdraw', { request_balance: balance })

@@ -26,10 +26,17 @@ import { getDetail } from '../../helpers/Request'
 
 type Props = NavigationScreenProps
 
+export enum Role {
+  User = 2,
+  Seller = 3,
+  Unknown = 4,
+}
+
 interface AccountData {
   balance: number
   name: string
   email: string
+  role: Role
 }
 
 interface State {
@@ -55,6 +62,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
         balance: 0,
         name: '',
         email: '',
+        role: Role.Unknown,
       },
     }
   }
@@ -148,95 +156,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
           </View>
 
           <Divider style={{ backgroundColor: 'gray', marginHorizontal: 4 }} />
-
-          <View
-            style={{
-              height: 60,
-              flexDirection: 'row',
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                flex: 0.33,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              activeOpacity={0.9}
-              onPress={() => this.props.navigation.navigate('Scan')}
-            >
-              <Icon
-                name="qrcode"
-                type="font-awesome"
-                size={32}
-                containerStyle={{
-                  width: 32,
-                  height: 32,
-                }}
-              />
-              <Text style={{ fontSize: 10 }}>Scan</Text>
-            </TouchableOpacity>
-
-            {/* <View
-              style={{
-                flex: 0.25,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Icon
-                name="share"
-                type="font-awesome"
-                size={32}
-                containerStyle={{
-                  width: 32,
-                  height: 32,
-                }}
-              />
-              <Text style={{ fontSize: 10 }}>Transfer</Text>
-            </View> */}
-
-            <TouchableOpacity
-              style={{
-                flex: 0.33,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              activeOpacity={0.9}
-              onPress={() => this.props.navigation.navigate('TopUp')}
-            >
-              <Icon
-                name="plus"
-                type="font-awesome"
-                size={32}
-                containerStyle={{
-                  width: 32,
-                  height: 32,
-                }}
-              />
-              <Text style={{ fontSize: 10 }}>Top Up</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                flex: 0.33,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              activeOpacity={0.9}
-              onPress={() => this.props.navigation.navigate('History')}
-            >
-              <Icon
-                name="history"
-                type="font-awesome"
-                size={32}
-                containerStyle={{
-                  width: 32,
-                  height: 32,
-                }}
-              />
-              <Text style={{ fontSize: 10 }}>History</Text>
-            </TouchableOpacity>
-          </View>
+          {this.drawBadge()}
         </View>
 
         <CustomText h4={true} h4Style={{ marginTop: 8, marginLeft: 16 }}>
@@ -290,6 +210,133 @@ class HomeScreen extends React.PureComponent<Props, State> {
     )
   }
 
+  private drawBadge = () => {
+    if (this.state.accountData.role === Role.Seller) {
+      return (
+        <View
+          style={{
+            height: 60,
+            flexDirection: 'row',
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              flex: 0.5,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            activeOpacity={0.9}
+            onPress={() => this.props.navigation.navigate('Withdraw', {balance: this.state.accountData.balance})}
+          >
+            <Icon
+              name={'dollar'}
+              type="font-awesome"
+              size={32}
+              containerStyle={{
+                width: 32,
+                height: 32,
+              }}
+            />
+            <Text style={{ fontSize: 10 }}>Withdraw</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              flex: 0.5,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            activeOpacity={0.9}
+            onPress={() => this.props.navigation.navigate('History')}
+          >
+            <Icon
+              name="history"
+              type="font-awesome"
+              size={32}
+              containerStyle={{
+                width: 32,
+                height: 32,
+              }}
+            />
+            <Text style={{ fontSize: 10 }}>History</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+
+    return (
+      <View
+        style={{
+          height: 60,
+          flexDirection: 'row',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            flex: 0.33,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          activeOpacity={0.9}
+          onPress={() => this.props.navigation.navigate('Scan')}
+        >
+          <Icon
+            name="qrcode"
+            type="font-awesome"
+            size={32}
+            containerStyle={{
+              width: 32,
+              height: 32,
+            }}
+          />
+          <Text style={{ fontSize: 10 }}>Scan</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            flex: 0.33,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          activeOpacity={0.9}
+          onPress={() => this.props.navigation.navigate('TopUp')}
+        >
+          <Icon
+            name={'plus'}
+            type="font-awesome"
+            size={32}
+            containerStyle={{
+              width: 32,
+              height: 32,
+            }}
+          />
+          <Text style={{ fontSize: 10 }}>Top Up</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            flex: 0.33,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          activeOpacity={0.9}
+          onPress={() => this.props.navigation.navigate('History')}
+        >
+          <Icon
+            name="history"
+            type="font-awesome"
+            size={32}
+            containerStyle={{
+              width: 32,
+              height: 32,
+            }}
+          />
+          <Text style={{ fontSize: 10 }}>History</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   private currencyFormat(balance: number) {
     return 'Rp.' + balance.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
   }
@@ -303,12 +350,16 @@ class HomeScreen extends React.PureComponent<Props, State> {
 
     getDetail()
       .then(value => {
-        const data = value.data as AccountData
+        const data = value.data
+        const accountData: AccountData = {
+          ...data,
+          role: data.role_id === 2 ? Role.User : Role.Seller,
+        }
 
         this.setState({
           isRefreshing: false,
           initiaLoading: false,
-          accountData: data,
+          accountData,
         })
       })
       .catch(err => {
