@@ -1,6 +1,6 @@
 // tslint:disable:arrow-parens
 import React, { Component } from 'react'
-import { AsyncStorage, View } from 'react-native'
+import { AsyncStorage, View, } from 'react-native'
 import { Button, Input } from 'react-native-elements'
 import { NavigationScreenProps } from 'react-navigation'
 import { requestLogin } from '../../../helpers/Request'
@@ -14,9 +14,18 @@ interface State {
 }
 
 export default class LoginScreen extends Component<Props, State> {
-  public static navigationOptions = {
+  public static navigationOptions = ({ navigation }: Props) => ({
     title: 'Login',
-  }
+    headerRight: (
+      <Button
+        // tslint:disable-next-line: jsx-no-lambda
+        onPress={() => navigation.navigate('Register')}
+        title="Register"
+        type={'clear'}
+      />
+    ),
+  })
+
   constructor(props: Props) {
     super(props)
     this.state = {

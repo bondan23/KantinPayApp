@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import {
   createAppContainer,
   createBottomTabNavigator,
@@ -36,10 +37,29 @@ HomeNavigator.navigationOptions = (props: NavigationScreenProps) => {
   }
 }
 
-const AppTabNavigator = createBottomTabNavigator({
-  Home: HomeNavigator,
-  Settings: SettingScreen,
-})
+const AppTabNavigator = createBottomTabNavigator(
+  {
+    Home: HomeNavigator,
+    Settings: SettingScreen,
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state
+        const IconComponent = Ionicons
+        let iconName
+        if (routeName === 'Home') {
+          iconName = `ios-home`
+        } else if (routeName === 'Settings') {
+          iconName = `ios-options`
+        }
+
+        // You can return any component that you like here!
+        return <IconComponent name={iconName} size={25} color={tintColor} />
+      },
+    }),
+  },
+)
 
 const AuthNavigator = createStackNavigator(
   {

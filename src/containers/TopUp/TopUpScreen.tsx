@@ -5,7 +5,7 @@ import { NavigationScreenProps } from 'react-navigation'
 import { requestTopUp } from '../../helpers/Request'
 
 type Props = NavigationScreenProps
-type SelectedValue = 10000 | 20000 | 50000 | 100000
+type SelectedValue = 10000 | 20000 | 50000 | 100000 | 200000
 
 interface State {
   selectedValue: SelectedValue
@@ -49,6 +49,7 @@ export default class TopUpScreen extends Component<Props, State> {
             <Picker.Item label="Rp. 20.000" value="20000" />
             <Picker.Item label="Rp. 50.000" value="50000" />
             <Picker.Item label="Rp. 100.000" value="100000" />
+            <Picker.Item label="Rp. 200.000" value="100000" />
           </Picker>
           <Button
             title="Request"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, ToastAndroid, View, } from 'react-native'
+import { Text, ToastAndroid, View } from 'react-native'
 import { Button, Input, Text as CustomText } from 'react-native-elements'
 import { NavigationScreenProps } from 'react-navigation'
 import { requestWithdraw } from '../../helpers/Request'
@@ -9,6 +9,7 @@ type Props = NavigationScreenProps
 interface State {
   amountToSend: number
   isLoading: boolean
+  disableButton: boolean
 }
 
 export default class TopUpScreen extends Component<Props, State> {
@@ -21,6 +22,7 @@ export default class TopUpScreen extends Component<Props, State> {
     this.state = {
       amountToSend: 0,
       isLoading: false,
+      disableButton: false,
     }
   }
 
@@ -45,13 +47,13 @@ export default class TopUpScreen extends Component<Props, State> {
               placeholder={'Rp....'}
             />
           </View>
-          <View style={{ alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <Button
               title="Request"
               containerStyle={{ width: 100 }}
               onPress={this.handleRequestBalance}
               loading={this.state.isLoading}
-              disabled={this.state.isLoading}
+              disabled={this.state.disableButton || this.state.isLoading }
             />
           </View>
         </View>
@@ -76,7 +78,13 @@ export default class TopUpScreen extends Component<Props, State> {
 
   private handleChangeText = (balance: string) => {
     const amountToSend = parseInt(balance, 10)
-    this.setState({ amountToSend })
+    const currentBalance = this.props.navigation.getParam('balance')
+
+    if (amountToSend > currentBalance) {
+      this.setState({ disableButton: true, amountToSend })
+    }else{
+      this.setState({ disableButton: false, amountToSend })
+    }
   }
 
   private currencyFormat(balance: number) {

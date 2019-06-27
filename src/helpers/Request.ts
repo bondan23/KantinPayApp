@@ -56,3 +56,16 @@ export const sendBalance = (id: number, amount: number) =>
 export const requestLogout = () => requestGet('logout')
 export const requestWithdraw = (balance: number) =>
   requestPost('request_withdraw', { request_balance: balance })
+export const requestRegister = (
+  name: string,
+  email: string,
+  password: string,
+  roleId: number
+) =>
+  requestPost('register', {
+    name,
+    email,
+    password,
+    c_password: password,
+    role_id: roleId,
+  })

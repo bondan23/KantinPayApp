@@ -160,41 +160,16 @@ class HomeScreen extends React.PureComponent<Props, State> {
         </View>
 
         <CustomText h4={true} h4Style={{ marginTop: 8, marginLeft: 16 }}>
-          Rekomendasi Makanan
-        </CustomText>
-
-        <View style={{ height: 158 }}>
-          <FlatList
-            data={[
-              { title: 'Ayam', key: 1 },
-              { title: 'Mie Goreng', key: 2 },
-              { title: 'Peler', key: 3 },
-            ]}
-            // ListHeaderComponent={() => <Text> Rekomendasi</Text>}
-            keyExtractor={(_, index) => `${index}`}
-            renderItem={this.renderItem}
-            horizontal={true}
-            contentContainerStyle={{
-              marginTop: 8,
-              paddingLeft: 16,
-              height: 150,
-            }}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-
-        <CustomText h4={true} h4Style={{ marginTop: 8, marginLeft: 16 }}>
-          Informasi Terkini
+          Informasi Terkini STT PLN
         </CustomText>
 
         <View style={{ height: 158, marginBottom: 16 }}>
           <FlatList
             data={[
-              { title: 'Ayam', key: 1 },
-              { title: 'Mie Goreng', key: 2 },
-              { title: 'Peler', key: 3 },
+              { title: 'Informasi 1', key: 1 },
+              { title: 'Informasi 2', key: 2 },
+              { title: 'Informasi 3', key: 3 },
             ]}
-            // ListHeaderComponent={() => <Text> Rekomendasi</Text>}
             keyExtractor={(_, index) => `${index}`}
             renderItem={this.renderItem}
             horizontal={true}
@@ -226,7 +201,11 @@ class HomeScreen extends React.PureComponent<Props, State> {
               justifyContent: 'center',
             }}
             activeOpacity={0.9}
-            onPress={() => this.props.navigation.navigate('Withdraw', {balance: this.state.accountData.balance})}
+            onPress={() =>
+              this.props.navigation.navigate('Withdraw', {
+                balance: this.state.accountData.balance,
+              })
+            }
           >
             <Icon
               name={'dollar'}
@@ -376,18 +355,20 @@ class HomeScreen extends React.PureComponent<Props, State> {
     />
   )
 
-  private renderItem = () => {
+  private renderItem = ({item}) => {
     return (
       <View
         style={{
           width: 250,
           height: 150,
-          backgroundColor: 'red',
+          backgroundColor: 'white',
           marginRight: 8,
           borderRadius: 10,
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
       >
-        <Text>Ayam</Text>
+        <Text style={{ color: 'black' }}>{item.title}</Text>
       </View>
     )
   }
