@@ -2,8 +2,8 @@
 import axios from 'axios'
 import { AsyncStorage } from 'react-native'
 
-// const HOST = 'http://kantinpay.off-bid.id'
-const HOST = 'http://192.168.5.252/kantinpay/public'
+const HOST = 'http://kantinpay.off-bid.id'
+// const HOST = 'http://192.168.5.252/kantinpay/public'
 const TOKEN_BONDAN =
   // tslint:disable-next-line:max-line-length
   'qWFDmwmZ1QNtlEJqWreOUAJJaYs20SLvQhFvN8Yj9bEaWwFGMVel9GlKRn3j'
