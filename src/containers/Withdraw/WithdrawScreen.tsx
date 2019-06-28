@@ -22,7 +22,7 @@ export default class TopUpScreen extends Component<Props, State> {
     this.state = {
       amountToSend: 0,
       isLoading: false,
-      disableButton: false,
+      disableButton: true,
     }
   }
 

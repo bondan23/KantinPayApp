@@ -39,8 +39,8 @@ HomeNavigator.navigationOptions = (props: NavigationScreenProps) => {
 
 const AppTabNavigator = createBottomTabNavigator(
   {
-    Home: HomeNavigator,
-    Settings: SettingScreen,
+    Beranda: HomeNavigator,
+    Pengaturan: SettingScreen,
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -48,9 +48,9 @@ const AppTabNavigator = createBottomTabNavigator(
         const { routeName } = navigation.state
         const IconComponent = Ionicons
         let iconName
-        if (routeName === 'Home') {
+        if (routeName === 'Beranda') {
           iconName = `ios-home`
-        } else if (routeName === 'Settings') {
+        } else if (routeName === 'Pengaturan') {
           iconName = `ios-options`
         }
 

@@ -21,7 +21,7 @@ interface State {
 
 export default class HistoryScreen extends Component<Props, State> {
   public static navigationOptions = {
-    title: 'History',
+    title: 'Riwayat',
   }
 
   constructor(props: Props) {
@@ -66,7 +66,6 @@ export default class HistoryScreen extends Component<Props, State> {
 
   private renderItem = ({ item }: { item: HistoryData }) => {
     if (item.type === 'Top Up' || item.type === 'Withdraw') {
-      const subject = item.type === 'Top Up' ? 'Your' : 'Success'
       return (
         <View
           style={{
@@ -80,7 +79,7 @@ export default class HistoryScreen extends Component<Props, State> {
           }}
         >
           <Text>
-            {subject} {item.type} of {this.currencyFormat(item.amount)}
+            Sukses {item.type} sebesar {this.currencyFormat(item.amount)}
           </Text>
         </View>
       )
@@ -99,7 +98,8 @@ export default class HistoryScreen extends Component<Props, State> {
         }}
       >
         <Text>
-          {item.name} {item.type} to {item.receiver}{' '}
+          {item.name} {item.type} ke {item.receiver}{' '}
+          sebesar{'\n'}
           {this.currencyFormat(item.amount)}
         </Text>
       </View>

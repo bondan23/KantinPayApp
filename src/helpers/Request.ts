@@ -2,7 +2,8 @@
 import axios from 'axios'
 import { AsyncStorage } from 'react-native'
 
-const HOST = 'http://192.168.5.253/kantinpay/public'
+// const HOST = 'http://kantinpay.off-bid.id'
+const HOST = 'http://192.168.5.252/kantinpay/public'
 const TOKEN_BONDAN =
   // tslint:disable-next-line:max-line-length
   'qWFDmwmZ1QNtlEJqWreOUAJJaYs20SLvQhFvN8Yj9bEaWwFGMVel9GlKRn3j'
@@ -60,12 +61,13 @@ export const requestRegister = (
   name: string,
   email: string,
   password: string,
-  roleId: number
+  confirmPassword: string, 
+  roleId: number,
 ) =>
   requestPost('register', {
     name,
     email,
     password,
-    c_password: password,
+    c_password: confirmPassword,
     role_id: roleId,
   })

@@ -49,7 +49,7 @@ export default class TopUpScreen extends Component<Props, State> {
             <Picker.Item label="Rp. 20.000" value="20000" />
             <Picker.Item label="Rp. 50.000" value="50000" />
             <Picker.Item label="Rp. 100.000" value="100000" />
-            <Picker.Item label="Rp. 200.000" value="100000" />
+            <Picker.Item label="Rp. 200.000" value="200000" />
           </Picker>
           <Button
             title="Request"

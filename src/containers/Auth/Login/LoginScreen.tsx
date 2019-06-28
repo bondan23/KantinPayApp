@@ -1,6 +1,6 @@
 // tslint:disable:arrow-parens
 import React, { Component } from 'react'
-import { AsyncStorage, View, } from 'react-native'
+import { AsyncStorage, ToastAndroid, View } from 'react-native'
 import { Button, Input } from 'react-native-elements'
 import { NavigationScreenProps } from 'react-navigation'
 import { requestLogin } from '../../../helpers/Request'
@@ -20,7 +20,7 @@ export default class LoginScreen extends Component<Props, State> {
       <Button
         // tslint:disable-next-line: jsx-no-lambda
         onPress={() => navigation.navigate('Register')}
-        title="Register"
+        title="Daftar"
         type={'clear'}
       />
     ),
@@ -55,6 +55,9 @@ export default class LoginScreen extends Component<Props, State> {
             loading={this.state.isLoading}
             containerStyle={{ width: 100 }}
             onPress={this.handleLogin}
+            disabled={
+              this.state.emailText.trim() === '' && this.state.passwordText === ''
+            }
           />
         </View>
       </View>
@@ -73,6 +76,7 @@ export default class LoginScreen extends Component<Props, State> {
         })
       })
       .catch(e => {
+        ToastAndroid.show("Email atau Password Salah", ToastAndroid.SHORT)
         this.setState({ isLoading: false })
       })
   }

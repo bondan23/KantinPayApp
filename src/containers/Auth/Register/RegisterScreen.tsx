@@ -13,11 +13,15 @@ interface State {
   passwordText: string
   confirmPasswordText: string
   selectedValue: 2 | 3
+  nameError? : string
+  emailError? : string
+  passwordError? : string
+  cPasswordError? : string
 }
 
 export default class RegisterScreen extends Component<Props, State> {
   public static navigationOptions = {
-    title: 'Register',
+    title: 'Daftar',
   }
 
   constructor(props: Props) {
@@ -36,26 +40,30 @@ export default class RegisterScreen extends Component<Props, State> {
     return (
       <View style={{ flex: 1 }}>
         <Input
-          placeholder="Name"
+          placeholder="Nama"
           inputStyle={{ textAlign: 'center' }}
           onChangeText={this.handleNameText}
+          errorMessage={this.state.nameError}
         />
         <Input
           placeholder="Email"
           inputStyle={{ textAlign: 'center' }}
           onChangeText={this.handleEmailText}
+          errorMessage={this.state.emailError}
         />
         <Input
           placeholder="Password"
           inputStyle={{ textAlign: 'center' }}
           secureTextEntry={true}
           onChangeText={this.handlePasswordText}
+          errorMessage={this.state.passwordError}
         />
         <Input
-          placeholder="Confirm Password"
+          placeholder="Konfirmasi Password"
           inputStyle={{ textAlign: 'center' }}
           secureTextEntry={true}
           onChangeText={this.handleConfirmPasswordText}
+          errorMessage={this.state.cPasswordError}
         />
         <Text style={{ textAlign: 'center', marginVertical: 4 }}>
           {' '}
@@ -70,12 +78,12 @@ export default class RegisterScreen extends Component<Props, State> {
             alignItems: 'center',
           }}
           // tslint:disable-next-line:jsx-no-lambda
-          onValueChange={(itemValue, _) =>
+          onValueChange={(itemValue, _) => {
             this.setState({ selectedValue: itemValue })
-          }
+          }}
         >
-          <Picker.Item label="Buyer" value="2" />
-          <Picker.Item label="Seller" value="3" />
+          <Picker.Item label="Pembeli" value="2" />
+          <Picker.Item label="Penjual" value="3" />
         </Picker>
         <View style={{ alignItems: 'center', flex: 1, marginTop: 10 }}>
           <Button
@@ -88,13 +96,14 @@ export default class RegisterScreen extends Component<Props, State> {
       </View>
     )
   }
-  
+
   private handleRegister = () => {
     this.setState({ isLoading: true })
     requestRegister(
       this.state.nameText,
       this.state.emailText.toLowerCase().trim(),
       this.state.passwordText,
+      this.state.confirmPasswordText,
       this.state.selectedValue,
     )
       .then(v => {
@@ -106,7 +115,44 @@ export default class RegisterScreen extends Component<Props, State> {
         })
       })
       .catch(e => {
-        this.setState({ isLoading: false })
+        const error = e.response.data.error
+        let state = {
+          nameError: undefined,
+          emailError: undefined,
+          passwordError: undefined,
+          cPasswordError: undefined,
+          isLoading: false
+        }
+
+        if (error.name) {
+          state = {
+            ...state,
+            nameError: error.name.toString(),
+          }
+        }
+
+        if(error.email){
+          state = {
+            ...state,
+            emailError: error.email.toString()
+          }
+        }
+
+        if(error.password){
+          state = {
+            ...state,
+            passwordError: error.password.toString()
+          }
+        }
+
+        if(error.c_password){
+          state = {
+            ...state,
+            cPasswordError: error.c_password.toString()
+          }
+        }
+
+        this.setState(state)
       })
   }
   private handleEmailText = (emailText: string) => this.setState({ emailText })

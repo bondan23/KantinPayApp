@@ -27,7 +27,7 @@ interface AccountData {
 
 export default class ScanScreen extends Component<Props, State> {
   public static navigationOptions = {
-    title: 'Transfer',
+    title: 'Scan',
   }
 
   constructor(props: Props) {
@@ -79,7 +79,7 @@ export default class ScanScreen extends Component<Props, State> {
         </View>
         <View style={{ alignItems: 'center', flex: 1, marginTop: 10 }}>
           <Button
-            title="Send"
+            title="Kirim"
             containerStyle={{ width: 100 }}
             onPress={this.handleSendBalance}
             loading={this.state.isLoading}
@@ -102,9 +102,6 @@ export default class ScanScreen extends Component<Props, State> {
     this.setState({ isLoading: true }, () =>
       sendBalance(this.state.accountData.id, this.state.amountToSend).then(
         value => {
-          console.log('====================================')
-          console.log('SUCCESS')
-          console.log('====================================')
           ToastAndroid.show(value.message, ToastAndroid.SHORT)
           this.setState({ isLoading: false }, this.props.navigation.pop)
         },

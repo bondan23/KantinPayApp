@@ -47,7 +47,7 @@ interface State {
 
 class HomeScreen extends React.PureComponent<Props, State> {
   public static navigationOptions = {
-    title: 'Home',
+    title: 'Beranda',
   }
 
   private navSubscription?: NavigationEventSubscription
@@ -160,7 +160,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
         </View>
 
         <CustomText h4={true} h4Style={{ marginTop: 8, marginLeft: 16 }}>
-          Informasi Terkini STT PLN
+          Informasi STT PLN
         </CustomText>
 
         <View style={{ height: 158, marginBottom: 16 }}>
@@ -237,7 +237,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
                 height: 32,
               }}
             />
-            <Text style={{ fontSize: 10 }}>History</Text>
+            <Text style={{ fontSize: 10 }}>Riwayat</Text>
           </TouchableOpacity>
         </View>
       )
@@ -310,7 +310,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
               height: 32,
             }}
           />
-          <Text style={{ fontSize: 10 }}>History</Text>
+          <Text style={{ fontSize: 10 }}>Riwayat</Text>
         </TouchableOpacity>
       </View>
     )
