@@ -4,6 +4,7 @@
 import React from 'react'
 import {
   ActivityIndicator,
+  Image,
   FlatList,
   RefreshControl,
   ScrollView,
@@ -160,15 +161,15 @@ class HomeScreen extends React.PureComponent<Props, State> {
         </View>
 
         <CustomText h4={true} h4Style={{ marginTop: 8, marginLeft: 16 }}>
-          Informasi STT PLN
+          Informasi STT-PLN
         </CustomText>
 
         <View style={{ height: 158, marginBottom: 16 }}>
           <FlatList
             data={[
-              { title: 'Informasi 1', key: 1 },
-              { title: 'Informasi 2', key: 2 },
-              { title: 'Informasi 3', key: 3 },
+              { title: 'Informasi 1', url: 'https://i.imgsafe.org/68/6830066539.jpeg' ,key: 1 },
+              { title: 'Informasi 2', url: 'https://i.imgsafe.org/68/6830028f8b.jpeg' ,key: 2 },
+              { title: 'Informasi 3', url: 'https://i.imgsafe.org/68/683016ca34.jpeg', key: 3 },
             ]}
             keyExtractor={(_, index) => `${index}`}
             renderItem={this.renderItem}
@@ -368,7 +369,7 @@ class HomeScreen extends React.PureComponent<Props, State> {
           justifyContent: 'center'
         }}
       >
-        <Text style={{ color: 'black' }}>{item.title}</Text>
+        <Image source={{uri: item.url}} style={{width:250, height:150, resizeMode:'contain'}} />
       </View>
     )
   }
